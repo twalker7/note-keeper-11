@@ -1,5 +1,5 @@
-{
-  "myNotes": [
+ 
+   [
     {
       "title": "Test Title",
       "text": "Test text"
@@ -19,5 +19,4 @@
       "text": "this is also a note ",
       "id": "3"
     }
-  ]
-}
+   ]
