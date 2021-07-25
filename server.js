@@ -5,6 +5,8 @@ const path = require('path');
 const PORT = process.env.PORT || 443;
 
 
+app.use(express.static('public'))
+
 // Necessary middleware functions ... parse incoming string or array data
 app.use(express.urlencoded({ extended: true }));
 // parse incoming JSON data
