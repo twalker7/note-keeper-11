@@ -1,10 +1,10 @@
-const notes = require('./db/db.json');
+let notes = require('./db/db.json');
 const express = require('express');
 const app = express();
 const path = require('path');
 const PORT = process.env.PORT || 443;
-
-
+const fs = require('fs');
+//need to refactor/modularize code and utilize the express router object 
 app.use(express.static('public'));
 
 // Necessary middleware functions ... parse incoming string or array data
@@ -24,6 +24,9 @@ app.get('/notes', (req, res)=>{
     res.sendFile(path.join(__dirname,  './public/notes.html'))
 });
 
+
+// API routes 
+
 app.get('/api/notes', (req, res)=>{
     let results = notes;
     
@@ -31,20 +34,16 @@ app.get('/api/notes', (req, res)=>{
 });
 
 app.delete('/api/notes/:id', (req, res)=>{
-    
-})
-/* function createNewAnimal(body, animalsArray) {
-    const animal = body;
-    animalsArray.push(animal);
-    // write to animals.json
-    fs.writeFileSync(
-      path.join(__dirname, '../data/animals.json'),
-      JSON.stringify({animals: animalsArray}, null, 2)
-    );
-    // return finished code to post route for response
-    return animal;
-  }
-*/
+    let id = req.params.id; 
+    notes = notes.filter(note => note.id != id);
+     res.json(notes);
+
+     fs.writeFileSync(
+        path.join(__dirname, '/db/db.json'),
+        JSON.stringify(notes, null, 2)
+      );
+});
+
 
 app.post('/api/notes', (req, res)=>{
     req.body.id = notes.length.toString();
@@ -53,11 +52,10 @@ app.post('/api/notes', (req, res)=>{
 
     fs.writeFileSync(
       path.join(__dirname, '/db/db.json'),
-      JSON.stringify({myNotes: notes}, null, 2)
+      JSON.stringify(notes, null, 2)
     );
     res.json(req.body);
 });
-
 
 
 
